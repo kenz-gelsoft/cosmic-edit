@@ -6,6 +6,6 @@ Terminal=false
 Type=Application
 StartupNotify=true
 MimeType=text/plain;
-Icon=com.system76.CosmicEdit
+Icon=io.github.kenz_gelsoft.CosmicEditIme
 Categories=COSMIC;Utility;TextEditor;
 Keywords=Text;Editor;
