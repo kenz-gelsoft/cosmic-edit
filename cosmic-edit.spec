@@ -18,7 +18,8 @@ BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  gcc-c++
 
-Provides: cosmic-edit
+Conflicts:      cosmic-edit
+Provides:       cosmic-edit
 
 %description
 COSMIC Edit is a multi-window text editor for the COSMIC Desktop Environment, 
