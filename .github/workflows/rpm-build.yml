@@ -47,12 +47,18 @@ jobs:
       - name: Prepare Sources
         run: |
           mkdir -p ~/rpmbuild/SOURCES
-          # current directory を cosmic-edit-0.1.0 という名前で固める
+          
+          # 1. 依存関係をダウンロード (vendor/ ディレクトリが作成される)
+          just vendor
+          
+          # 2. just build-vendored が要求する vendor.tar を作成する
+          tar -cf vendor.tar vendor/
+          
+          # 3. RPMビルド用のディレクトリ構造を作成して固める
           mkdir -p ../cosmic-edit-0.1.0
           cp -r . ../cosmic-edit-0.1.0/
           cd ..
           tar -czf ~/rpmbuild/SOURCES/cosmic-edit-0.1.0.tar.gz cosmic-edit-0.1.0/
-
 
       - name: Execute rpmbuild
         run: |
