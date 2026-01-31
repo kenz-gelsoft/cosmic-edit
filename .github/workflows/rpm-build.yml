@@ -62,10 +62,10 @@ jobs:
           fi
           
           # 3. RPMビルド用のディレクトリ構造を作成して固める
-          mkdir -p ../cosmic-edit-0.1.0
-          cp -r . ../cosmic-edit-0.1.0/
+          mkdir -p ../cosmic-edit-ime-0.1.0
+          cp -r . ../cosmic-edit-ime-0.1.0/
           cd ..
-          tar -czf ~/rpmbuild/SOURCES/cosmic-edit-0.1.0.tar.gz cosmic-edit-0.1.0/
+          tar -czf ~/rpmbuild/SOURCES/cosmic-edit-ime-0.1.0.tar.gz cosmic-edit-ime-0.1.0/
 
       - name: Execute rpmbuild
         run: |
