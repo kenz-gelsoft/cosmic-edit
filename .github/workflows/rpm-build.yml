@@ -25,10 +25,8 @@ jobs:
         run: |
           # EPEL 10 の導入
           dnf install -y epel-release
-          
           # EL10では CRB の有効化方法が標準化されています
           dnf config-manager --set-enabled crb || dnf install -y 'dnf-command(config-manager)' && dnf config-manager --set-enabled crb
-          
           # just を含む全依存関係を RPM でインストール
           dnf install -y \
             rpm-build \
