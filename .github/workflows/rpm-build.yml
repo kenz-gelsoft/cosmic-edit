@@ -26,22 +26,29 @@ jobs:
         run: |
           dnf install -y epel-release
           dnf config-manager --set-enabled crb || /usr/bin/crb enable
-          
           dnf install -y \
-            rpm-build \
-            pkgconfig \
-            gcc-c++ \
-            cargo \
-            rust \
-            just \
-            glib2-devel \
-            libxkbcommon-devel \
-            cmake \
-            freetype-devel \
-            fontconfig-devel \
-            wayland-devel \
-            libinput-devel \
-            libxkbcommon-x11-devel
+            rpm-build pkgconfig gcc-c++ cargo rust git cmake \
+            glib2-devel libxkbcommon-devel freetype-devel \
+            fontconfig-devel wayland-devel libinput-devel libxkbcommon-x11-devel
+
+      - name: Install Just via Cargo
+        run: |
+          # ビルド済みのバイナリをインストール (高速化のため)
+          cargo install just
+          # CargoのバイナリパスをGitHubの環境変数に追加
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Prepare Sources
+        run: |
+          mkdir -p ~/rpmbuild/SOURCES
+          # PATHが通っているのでそのまま just が使えます
+          just vendor
+          tar -czf ~/rpmbuild/SOURCES/cosmic-edit-0.1.0.tar.gz .
+
+      - name: Execute rpmbuild
+        run: |
+          # --nodeps を付与して 'just' のパッケージチェックを回避
+          rpmbuild -ba --nodeps cosmic-edit.spec --define "_topdir $HOME/rpmbuild"
 
       - name: Prepare Sources
         run: |
