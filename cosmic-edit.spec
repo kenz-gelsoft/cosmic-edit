@@ -1,13 +1,13 @@
 %define debug_package %{nil}
 %define _build_id_links none
 
-Name:           cosmic-edit
+Name:           cosmic-edit-ime
 Version:        0.1.0
 Release:        1%{?dist}
-Summary:        COSMIC text editor
+Summary:        COSMIC text editor(IME)
 License:        GPLv3
-URL:            https://github.com/pop-os/cosmic-edit
-Source0:        %{name}-%{version}.tar.gz
+URL:            https://github.com/kenz-gelsoft/cosmic-edit
+Source0:        https://github.com/kenz-gelsoft/cosmic-edit/archive/refs/heads/backport-input-method.tar.gz#/%{name}-%{version}.tar.gz
 
 # DebianのBuild-Dependsに対応するRPMの依存
 BuildRequires:  just
@@ -17,6 +17,8 @@ BuildRequires:  git
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(xkbcommon)
 BuildRequires:  gcc-c++
+
+Provides: cosmic-edit
 
 %description
 COSMIC Edit is a multi-window text editor for the COSMIC Desktop Environment, 
@@ -46,4 +48,4 @@ just rootdir=%{buildroot} install
 
 %changelog
 * Sat Jan 31 2026 Your Name <you@example.com> - 0.1.0-1
-- Initial RPM build using just and AlmaLinux 9
+- Initial RPM build using just and AlmaLinux 10
