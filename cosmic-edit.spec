@@ -30,10 +30,15 @@ just build-vendored
 # Debianのdh_auto_install相当
 just rootdir=%{buildroot} install
 
+
+# デバッグ情報パッケージの生成でエラーが出る場合は以下を有効に（任意）
+# %define debug_package %{nil}
+
 %files
 %{_bindir}/cosmic-edit
 %{_datadir}/applications/*.desktop
-%{_datadir}/icons/hicolor/scalable/apps/*.svg
+# パスを scalable ではなく hicolor 以下の全ての svg を拾うように修正
+%{_datadir}/icons/hicolor/*/apps/*.svg
 %{_datadir}/metainfo/*.xml
 
 %changelog
