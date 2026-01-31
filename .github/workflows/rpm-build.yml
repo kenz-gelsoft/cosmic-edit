@@ -22,9 +22,17 @@ jobs:
         with:
           submodules: true
 
+
       - name: Install System Dependencies
         run: |
+          # 1. EPELのインストール
           dnf install -y epel-release
+          
+          # 2. CRB (CodeReady Builder) リポジトリの有効化
+          # これを入れないと libinput-devel や wayland-devel が見つかりません
+          dnf config-manager --set-enabled crb || /usr/bin/crb enable
+          
+          # 3. 依存パッケージのインストール
           dnf install -y \
             rpm-build \
             pkgconfig \
@@ -37,7 +45,8 @@ jobs:
             freetype-devel \
             fontconfig-devel \
             wayland-devel \
-            libinput-devel
+            libinput-devel \
+            libxkbcommon-x11-devel
 
       - name: Install Just
         run: |
