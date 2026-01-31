@@ -22,23 +22,18 @@ jobs:
         with:
           submodules: true
 
-
       - name: Install System Dependencies
         run: |
-          # 1. EPELのインストール
           dnf install -y epel-release
-          
-          # 2. CRB (CodeReady Builder) リポジトリの有効化
-          # これを入れないと libinput-devel や wayland-devel が見つかりません
           dnf config-manager --set-enabled crb || /usr/bin/crb enable
           
-          # 3. 依存パッケージのインストール
           dnf install -y \
             rpm-build \
             pkgconfig \
             gcc-c++ \
             cargo \
             rust \
+            just \
             glib2-devel \
             libxkbcommon-devel \
             cmake \
@@ -47,14 +42,6 @@ jobs:
             wayland-devel \
             libinput-devel \
             libxkbcommon-x11-devel
-
-      - name: Install Just
-        run: |
-          # 2026年現在、EPELにある場合は dnf で、なければ cargo で
-          dnf install -y just || cargo install just
-          if [ -f $HOME/.cargo/bin/just ]; then
-            echo "$HOME/.cargo/bin" >> $GITHUB_PATH
-          fi
 
       - name: Prepare Sources
         run: |
