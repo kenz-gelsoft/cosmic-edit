@@ -7,6 +7,7 @@ URL:            https://github.com/pop-os/cosmic-edit
 Source0:        %{name}-%{version}.tar.gz
 
 # DebianのBuild-Dependsに対応するRPMの依存
+BuildRequires:  just
 BuildRequires:  cargo
 BuildRequires:  rust
 BuildRequires:  git
