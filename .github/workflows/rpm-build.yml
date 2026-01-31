@@ -1,4 +1,4 @@
-name: Build RPM (AlmaLinux 9)
+name: Build RPM (AlmaLinux 10)
 
 on:
   push:
@@ -9,12 +9,11 @@ jobs:
   build-rpm:
     runs-on: ubuntu-latest
     container:
-      image: almalinux:9
-      options: --user root  # 確実にパッケージ追加ができるように
+      image: almalinux:10
+      options: --user root
 
     steps:
-      # checkout の前に最小限の git をインストールする
-      - name: Install Git for checkout
+      - name: Install Git
         run: dnf install -y git
 
       - name: Checkout code
@@ -24,47 +23,44 @@ jobs:
 
       - name: Install System Dependencies
         run: |
+          # EPEL 10 の導入
           dnf install -y epel-release
-          dnf config-manager --set-enabled crb || /usr/bin/crb enable
+          
+          # EL10では CRB の有効化方法が標準化されています
+          dnf config-manager --set-enabled crb || dnf install -y 'dnf-command(config-manager)' && dnf config-manager --set-enabled crb
+          
+          # just を含む全依存関係を RPM でインストール
           dnf install -y \
-            rpm-build pkgconfig gcc-c++ cargo rust git cmake \
-            glib2-devel libxkbcommon-devel freetype-devel \
-            fontconfig-devel wayland-devel libinput-devel libxkbcommon-x11-devel
-
-      - name: Install Just via Cargo
-        run: |
-          # ビルド済みのバイナリをインストール (高速化のため)
-          cargo install just
-          # CargoのバイナリパスをGitHubの環境変数に追加
-          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+            rpm-build \
+            pkgconfig \
+            gcc-c++ \
+            cargo \
+            rust \
+            just \
+            glib2-devel \
+            libxkbcommon-devel \
+            cmake \
+            freetype-devel \
+            fontconfig-devel \
+            wayland-devel \
+            libinput-devel \
+            libxkbcommon-x11-devel
 
       - name: Prepare Sources
         run: |
           mkdir -p ~/rpmbuild/SOURCES
-          # PATHが通っているのでそのまま just が使えます
+          # RPM版の just で高速に実行
           just vendor
           tar -czf ~/rpmbuild/SOURCES/cosmic-edit-0.1.0.tar.gz .
 
       - name: Execute rpmbuild
         run: |
-          # --nodeps を付与して 'just' のパッケージチェックを回避
-          rpmbuild -ba --nodeps cosmic-edit.spec --define "_topdir $HOME/rpmbuild"
-
-      - name: Prepare Sources
-        run: |
-          mkdir -p ~/rpmbuild/SOURCES
-          # cosmic-edit は submodules も含めて固める必要があります
-          just vendor
-          # フォルダ全体を固める
-          tar -czf ~/rpmbuild/SOURCES/cosmic-edit-0.1.0.tar.gz .
-
-      - name: Execute rpmbuild
-        run: |
+          # BuildRequires に just を含めた spec ファイルでも問題なく通ります
           rpmbuild -ba cosmic-edit.spec --define "_topdir $HOME/rpmbuild"
 
       - name: Upload RPM
         uses: actions/upload-artifact@v4
         with:
-          name: cosmic-edit-el9-rpm
+          name: cosmic-edit-el10-rpm
           path: ~/rpmbuild/RPMS/*/*.rpm
 
