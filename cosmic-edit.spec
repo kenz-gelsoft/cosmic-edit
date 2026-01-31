@@ -12,8 +12,6 @@ BuildRequires:  rust
 BuildRequires:  git
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(xkbcommon)
-# Debianの'just'に対応（EPEL等から導入、またはcargoでインストール）
-BuildRequires:  just
 BuildRequires:  gcc-c++
 
 %description
