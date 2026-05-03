@@ -40,8 +40,8 @@ default-features = false
 git = "https://github.com/pop-os/cosmic-syntax-theme.git"
 
 [dependencies.cosmic-text]
-git = "https://github.com/pop-os/cosmic-text.git"
 features = ["syntect", "vi"]
+version = "0.19"
 
 [dependencies.libcosmic]
 git = "https://github.com/pop-os/libcosmic.git"
@@ -70,7 +70,9 @@ debug = true
 onig = { git = "https://github.com/rust-onig/rust-onig.git", branch = "main" }
 onig_sys = { git = "https://github.com/rust-onig/rust-onig.git", branch = "main" }
 
-# [patch.'https://github.com/pop-os/libcosmic']
+[patch.'https://github.com/pop-os/libcosmic']
 # libcosmic = { git = "https://github.com/pop-os/libcosmic//" }
 # cosmic-config = { git = "https://github.com/pop-os/libcosmic//" }
 # cosmic-theme = { git = "https://github.com/pop-os/libcosmic//" }
+libcosmic = { git = "https://github.com/kenz-gelsoft/libcosmic/", branch = "ignore_del_surrounding" } 
+
